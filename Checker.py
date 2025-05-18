@@ -22,7 +22,7 @@ def chequejar_exemples(executable, inici = 4, fi = 16, num_exemples=20):
     if executable.endswith(".py"):
         command_line = ['python3', executable]
     else:
-        command_line = [executable]
+        command_line = ['./' + executable]
 
 
     # Itera sobre els valors de n i m
@@ -32,7 +32,8 @@ def chequejar_exemples(executable, inici = 4, fi = 16, num_exemples=20):
         point_time = 0
         for m in range(1, num_exemples+1):
             input_filename = os.path.join(input_directory, f"batalla-{n}-{m}.txt")
-            output_filename = os.path.join(output_directory, f"solucio-{n}-{m}.txt")
+            solutions_filename = os.path.join(output_directory, f"solucio-{n}-{m}.txt")
+            output_filename = "output.txt"
 
             # Comprova si l'arxiu d'entrada existeix
             if not os.path.exists(input_filename):
@@ -50,32 +51,33 @@ def chequejar_exemples(executable, inici = 4, fi = 16, num_exemples=20):
                 stderr=subprocess.PIPE,
             )
             final_time = time.time()
-            output_data = process.stdout.decode("utf-8")
-            error_data = process.stderr.decode("utf-8")
-            with open("output.txt", "w") as temp_file:
-                temp_file.write(output_data + error_data)
+            #output_data = process.stdout.decode("utf-8")
+            #error_data = process.stderr.decode("utf-8")
+            #with open(output_filename, "w") as temp_file:
+            #    temp_file.write(output_data + error_data)
 
-            solution = output_data.split() # FALTA CAPTURAR DISTANCIA
-            if debug:
-                print("Output:", solution)
-            point_time += final_time - initial_time
-
-            # Comprova si l'arxiu de sortida existeix
-            if debug:
-                print(f"Checking {output_filename}")
+           # Comprova si l'arxiu de sortida existeix
             if not os.path.exists(output_filename):
                 print(f"Arxiu no trobat: {output_filename}")
                 raise FileNotFoundError
 
-            # Llegeix les solucions de l'arxiu de sortida
-            distancia = 0.0
+            solution = ""
+            with open(output_filename, "r") as out_file:
+                distancia = out_file.readline().strip()
+                solution = out_file.readline().split()
+            if debug:
+                print("Output:", solution)
+
+            point_time += final_time - initial_time
+ 
+            # Llegeix les solucions de l'arxiu de solucions
+            distancia = ""
             solucions = []
-            with open(output_filename, 'r') as f:
-                distancia = float(f.readline())
+            with open(solutions_filename, 'r') as f:
+                distancia = f.readline()
                 # Llegeix les solucions
                 for line in f:
-                    solucio = f.readline().split()
-                    solucio = [int(x) for x in solucio]
+                    solucio = line.split()
                     solucions.append( solucio )
 
             if debug:
@@ -94,12 +96,13 @@ def chequejar_exemples(executable, inici = 4, fi = 16, num_exemples=20):
 def print_times(inici, fi, times, executable):
     # Print the times
     if matplotlib_installed:
-        plt.legend(loc="upper left")
+        plt.legend("Time", loc="upper left")
         plt.xticks(range(inici, fi + 1))
         plt.title("Time to solve the problem:" + executable)
         plt.xlabel("Number of boys")
         plt.ylabel("Time (s)")
         plt.plot(*zip(*times))
+        #plt.grid()
         plt.savefig("time.png")
         plt.show()
     else:
@@ -107,6 +110,12 @@ def print_times(inici, fi, times, executable):
 
 if __name__ == '__main__':
     import sys
+
+    if len(sys.argv) < 2:
+        print("Usage: python3 Checker.py <executable> [<start> <end>]")
+        print("Example: python3 Checker.py ./batalla.py")
+        print("Example: python3 Checker.py ./batalla.py 4 15")
+        sys.exit(1)
 
     times = []
     inici, fi = 0, 0
