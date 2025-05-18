@@ -1,4 +1,4 @@
-# Código Python: Partició en dos equips maximitzant la mínima distància ● DP
+"""Partició en dos equips maximitzant la mínima distància"""
 import sys
 import math
 from collections import deque
@@ -25,17 +25,7 @@ def solve(n, pts):
     """
     Retorna (millor_dist, equip_indices) amb:
       - equip_indices: n índexs (1-based) d'un dels equips
-      - millor_dist: la màxima mínima distància entre equips
-
-    Enfocament:
-      1. Precomputeix la matriu de distàncies O((2n)^2).
-      2. Extreu els pesos de l'MST amb Prim en O((2n)^2).
-      3. Ordena els pesos únics de l'MST → llindars candidats.
-      4. Cerca binària sobre llindars:
-         a. Construeix graella de components amb BFS per dist < T.
-         b. Aplica DP subset-sum amb bitset per veure si algun subconjunt de components suma n.
-         c. Reconstrueix components escollides.  
-    Complexitat total: O((2n)^2 log n) amb constants baixos.
+      - millor_dist: la màxima mínima distància entre equips.
     """
     n2 = 2 * n
     # 1) Matriu completa de distàncies
