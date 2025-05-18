@@ -1,108 +1,67 @@
-# Max Min Team Partition 🧠⚖️
+# Partició òptima d’equips a l’illa
 
-Algorisme per dividir 2n persones en dos equips de n membres, **maximitzant la mínima distància entre membres del mateix equip**.
+Aquest programa resol el problema de dividir 2k nois en dos equips de k membres cadascun de manera que **es maximitzi la distància mínima entre qualsevol parella de membres de diferents equips**.
 
----
+## Funcionament
 
-## 🎯 Objectiu
+L’algorisme:
+- Calcula totes les distàncies entre punts (matriu de distàncies).
+- Obté possibles llindars de distància a partir del MST (arbre generador mínim).
+- Fa una cerca binària sobre aquests llindars per trobar el màxim que permet dividir els nois en dos equips viables.
+- Comprova la factibilitat de cada llindar amb un algorisme de components connexes i programació dinàmica.
 
-Donats `2n` punts en el pla, es vol construir dos equips iguals de manera que la **distància mínima entre qualsevol parella del mateix equip sigui tan gran com sigui possible**.
-
----
-
-## 🛠️ Enfocament
-
-Aquesta solució **no usa força bruta**. S'utilitzen tècniques avançades per garantir eficiència:
-
-* **Matriu de distàncies** precomputada: `O((2n)^2)`
-* **Minimum Spanning Tree (Prim)** per extreure llindars rellevants
-* **Cerca binària** sobre llindars candidats
-* **BFS** per identificar components que no poden separar-se amb arestes curtes
-* **Programació Dinàmica (subset-sum amb bitset)** per veure si és possible formar un equip de mida `n` amb components
-
-### Complexitat
-
-* Total: `O((2n)^2 * log n)`
-* Optimitzat per a `n` relativament grans (fins a 20 o més)
-
----
-
-## 📁 Fitxers
-
-* `partition.py`: Codi principal completament comentat
-* `input.txt` (opcional): Fitxer d'exemple amb format d’entrada
-* `output.txt` (opcional): Fitxer amb resultat
-
----
-
-## 📅 Format d'entrada
-
-Primer una línia amb `n`. Després `2n` línies amb coordenades:
-
-```
-3
-0 0
-0 1
-0 2
-10 0
-10 1
-10 2
-```
-
----
-
-## 📄 Format de sortida
-
-Una línia amb la millor distància mínima trobada (amb 6 decimals), i una segona línia amb els índexs (1-based) d'un dels equips:
-
-```
-1.000000
-1 2 3
-```
-
----
-
-## 🚀 Com executar
+## Ús
 
 ```bash
-python3 partition.py < input.txt > output.txt
+python3 batalla.py [input_file] [output_file]
 ```
 
-O bé passant els fitxers com arguments:
+Si no es proporcionen fitxers, llegeix de l’entrada estàndard i escriu a la sortida estàndard.
 
-```bash
-python3 partition.py input.txt output.txt
-```
+### Format d’entrada
 
----
+- Una línia amb l’enter `k` (mida de cada equip).
+- `2k` línies amb dos enters `x y`, les coordenades de cada noi.
 
-## ✅ Exemple
-
-**Entrada:**
-
+**Exemple:**
 ```
 2
 0 0
-0 2
-10 0
-10 2
+1 1
+0 1
+1 0
 ```
 
-**Sortida:**
+### Format de sortida
 
+- Una línia amb la distància mínima entre equips (amb precisió de 6 decimals).
+- Una línia amb els índexs (1-based) d’un dels equips, separats per espais i ordenats.
+
+**Exemple:**
 ```
-2.000000
+1.000000
 1 2
 ```
 
----
+## Fitxers
 
-## 🧠 Notes finals
+- `batalla.py`: Codi principal de resolució del problema.
+- `README.md`: Documentació del projecte.
 
-* Aquesta implementació **prioritza la claredat, comentaris i eficiència**.
-* Cap part del codi empra enumeració de combinacions ni força bruta.
-* Ideal per competicions o projectes amb restriccions exigents.
+## Requisits
 
----
+- Python 3.6+
+- Llibreries usades: només estàndard (`math`, `sys`, `collections`)
 
-💡 Desenvolupat amb passió per l'algorítmica eficient.
+## Notes d’implementació
+
+- La partició es basa en components connexos respecte a un llindar de distància.
+- La factibilitat de formar dos equips s’avalua amb una DP de subconjunts.
+- L’algorisme funciona en temps **polinòmic** per la mida del problema esperada a la pràctica.
+
+## Autor
+
+Aleix Bertran Andreu (48251646S) — Grau en Enginyeria Informàtica  
+Bru Pallàs Vargués (48251999T)  — Grau en Enginyeria Informàtica  
+
+Universitat de Lleida — Algorísmia i Complexitat (2024/2025)
