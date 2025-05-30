@@ -84,7 +84,7 @@ def generate_teams(total, k):
 
 ## Autors
 
-- **Aleix Bertran Andreu** (48251646S) — Grau en Enginyeria Informàtica  
-- **Bru Pallàs Vargués** (48251999T) — Grau en Enginyeria Informàtica  
+- **Aleix Bertran Andreu**  — Grau en Enginyeria Informàtica  
+- **Bru Pallàs Vargués**  — Grau en Enginyeria Informàtica  
 
 **Universitat de Lleida — Algorísmia i Complexitat (2024/2025)**
