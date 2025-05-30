@@ -1,7 +1,27 @@
 """Partició en dos equips maximitzant la mínima distància"""
 import sys
 import math
+import time
+import functools
+import itertools
 from collections import deque
+
+
+def timeit(func):
+    """Decorador per mesurar el temps d'execució d'una funció."""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"[INFO] Temps d'execució de {func.__name__}: {end - start:.6f} segons")
+        return result
+    return wrapper
+
+
+def generate_teams(total, k):
+    """Generador de combinacions d'equips de mida k d'entre total nois."""
+    return itertools.combinations(range(total), k)
 
 
 def read_input(source):
@@ -111,6 +131,7 @@ def binary_search_threshold(thresholds, pts, adj, k):
     return best_d, best_team
 
 
+@timeit
 def solve(k, pts):
     """Retorna distància i equip òptim"""
     total = 2 * k
