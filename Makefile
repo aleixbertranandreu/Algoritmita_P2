@@ -1,32 +1,41 @@
-# Configuració de rangs de test
 INICI=5
-FI=10
+FI=11
 
-# Nom base dels fitxers
+# Arxius específics
+iter=batalla_iter.py
+rec=batalla_rec.py
+hs=batalla.hs
 practica=batalla
 
-# Compilació automàtica del codi Haskell
-$(practica): $(practica).hs
-	ghc $< -o $(practica)
+# Compila la versió Haskell
+$(practica): $(hs)
+	ghc $<
 
-# Generar instàncies de prova
-instances:
+# Genera instàncies d'entrada
+instances: 
 	python3 Generator.py $(INICI) $(FI)
 
-# Test de la versió en Python
-test-py: $(practica).py
-	python3 Checker.py $(practica).py $(INICI) $(FI)
+# Test versió iterativa
+test_iter: $(iter)
+	python3 Checker.py $(iter) $(INICI) $(FI)
 
-# Test de la versió en Haskell
-test-hs: $(practica)  # compila si cal
-	python3 Checker.py ./$(practica) $(INICI) $(FI)
+# Test versió recursiva
+test_rec: $(rec)
+	python3 Checker.py $(rec) $(INICI) $(FI)
 
-# Crear zip per entregar la pràctica
+# Test versió Haskell (opcional)
+# test_hs: $(practica)
+#	python3 Checker.py ./$(practica) $(INICI) $(FI)
+
+# Crear zip amb tot el necessari
 zip:
 	$(RM) scripts.zip
-	zip -r scripts.zip Makefile Checker.py $(practica).py $(practica).hs Generator.py
+	zip -r scripts.zip Makefile Checker.py $(iter) $(rec) $(hs) Generator.py
 
-# Netejar fitxers intermedis
+# Neteja fitxers GHC
 clean:
-	$(RM) $(practica) $(practica).o $(practica).hi scripts.zip
+	$(RM) $(practica) $(practica).o $(practica).hi
 
+# Entrega final
+entrega:
+	zip PR2_Algoritmia_Bertran-Pallàs.zip $(iter) $(rec) $
