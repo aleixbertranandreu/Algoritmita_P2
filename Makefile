@@ -23,19 +23,15 @@ test_iter: $(iter)
 test_rec: $(rec)
 	python3 Checker.py $(rec) $(INICI) $(FI)
 
-# Test versió Haskell (opcional)
-# test_hs: $(practica)
-#	python3 Checker.py ./$(practica) $(INICI) $(FI)
-
-# Crear zip amb tot el necessari
+# Crear zip amb tots els scripts
 zip:
 	$(RM) scripts.zip
-	zip -r scripts.zip Makefile Checker.py $(iter) $(rec) $(hs) Generator.py
+	zip -r scripts.zip Makefile Checker.py Generator.py $(iter) $(rec) $(hs) README.md
 
-# Neteja fitxers GHC
+# Neteja fitxers de compilació Haskell
 clean:
 	$(RM) $(practica) $(practica).o $(practica).hi
 
-# Entrega final
+# Entrega final completa
 entrega:
-	zip PR2_Algoritmia_Bertran-Pallàs.zip $(iter) $(rec) $
+	zip PR2_Algoritmia_Bertran-Pallàs.zip $(iter) $(rec) Checker.py Generator.py Makefile README.md
